@@ -64,9 +64,9 @@ jobs:
             -Durl=file://${{ github.workspace }}/hazelcast \
             -DrepositoryId=local-test-repo \
             --batch-mode || true
-
-          acs_path=$(find hazelcast -name "hazelcast-root-*.pom.asc" | head -n 1)
-          assert_true "[ -f '${acs_path}' ]" "The sign pom.xml.asc should be generated" || TESTS_RESULT=$?
+            
+          [ -f "$(find hazelcast -name "hazelcast-root-*.pom.asc" | head -n 1)" ]; file_exists=$?
+          assert_eq 0 "${file_exists}" "The sign pom.xml.asc should be generated" || TESTS_RESULT=$?
 
           assert_eq 0 "${TESTS_RESULT}" "All tests should pass"
         env:
