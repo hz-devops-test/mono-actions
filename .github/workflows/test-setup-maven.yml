@@ -60,6 +60,7 @@ jobs:
               -DpomFile=pom.xml \
               -Dfile=pom.xml \
               -Durl=file://${{ github.workspace }}/hazelcast
+              --batch-mode
           ) || true
             
           [ -f "$(find hazelcast -name "hazelcast-root-*.pom.asc" | head -n 1)" ]; file_exists=$?
