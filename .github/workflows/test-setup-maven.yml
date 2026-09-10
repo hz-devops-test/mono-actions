@@ -64,7 +64,7 @@ jobs:
             --batch-mode || true
 
           acs_path=$(find hazelcast -name "hazelcast-root-*.pom.asc" | head -n 1)
-          assert_true "[ -f '${acs_path}' ]" "The dynamic snapshot signature file should be generated" || TESTS_RESULT=$?
+          assert_true "[ -f '${acs_path}' ]" "The sign pom.xml.asc should be generated" || TESTS_RESULT=$?
 
           assert_eq 0 "$TESTS_RESULT" "All GPG verification tests should pass"
         env:
