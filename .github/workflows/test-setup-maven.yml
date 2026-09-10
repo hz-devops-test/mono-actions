@@ -2,6 +2,7 @@ name: Test setup-maven action
 
 on:
   workflow_call:
+    secrets: inherit
 
 env:
   CURL_ASSERT_SCRIPT: >-
