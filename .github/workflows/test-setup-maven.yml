@@ -71,7 +71,11 @@ jobs:
 
           echo "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
           [ -f "$(find hazelcast -name "hazelcast-root-*.pom.asc" | head -n 1)" ]; file_exists=$?
-          assert_eq 0 "${file_exists}" "The signed pom.asc should be generated" || TESTS_RESULT=$?
+
+          local msg="The signed pom.asc should be generated"
+          assert_eq 0 "${file_exists}" "$msg" && log_success "${msg}" || TESTS_RESULT=$?
+          
+          #assert_eq 0 "${file_exists}" "The signed pom.asc should be generated" || TESTS_RESULT=$?
 
           assert_eq 0 "${TESTS_RESULT}" "All tests should pass"
         env:
