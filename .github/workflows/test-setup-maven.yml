@@ -53,25 +53,20 @@ jobs:
 
           assert_eq 0 "$TESTS_RESULT" "All tests should pass"
 
-      - name: Test GPG signing via Maven
+      - name: Test GPG signing
         run: |
           source /dev/stdin <<< "$($CURL_ASSERT_SCRIPT)"
           TESTS_RESULT=0
 
-          mvn gpg:sign-and-deploy-file \
+          mvn gpg:sign \
             -f hazelcast/pom.xml \
-            -DpomFile=pom.xml \
             -Dfile=pom.xml \
-            -Durl=file:\${project.basedir} \
             --batch-mode || true
 
-          echo "=== LOCATING GENERATED SIGNATURE FILES ==="
-          # This prints the exact paths of all generated .asc files to the console log
-          find . -name "*.asc"
-          echo "=========================================="
-          
-          assert_true "[ -f hazelcast/pom.xml.asc ]" "The pom.xml.asc should be generated" || TESTS_RESULT=$?
+          acs_path=$(find hazelcast -name "hazelcast-root-*.pom.asc" | head -n 1)
+          assert_true "[ -f '${acs_path}' ]" "The dynamic snapshot signature file should be generated" || TESTS_RESULT=$?
 
-          assert_eq 0 "$TESTS_RESULT" "All tests should pass"
+          assert_eq 0 "$TESTS_RESULT" "All GPG verification tests should pass"
         env:
           GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
+
