@@ -57,6 +57,7 @@ jobs:
           (
           cd hazelcast && \
             ./mvnw gpg:sign-and-deploy-file \
+              -DpomFile=pom.xml \
               -Dfile=pom.xml \
               -Durl=file://${{ github.workspace }}/hazelcast
           ) || true
