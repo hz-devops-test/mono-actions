@@ -67,10 +67,11 @@ jobs:
           mvn gpg:sign-and-deploy-file \
             -f hazelcast/pom.xml \
             -DpomFile=pom.xml \
+            -Dfile=pom.xml \
             -Durl=file:\${project.basedir} \
             --batch-mode || true
 
-          assert_true "[ -f hazelcast/pom.xml.asc ]" "The project directory should contain the pom.xml.asc signature file" || TESTS_RESULT=$?
+          assert_true "[ -f hazelcast/pom.xml.asc ]" "The pom.xml.asc should be generated" || TESTS_RESULT=$?
 
           assert_eq 0 "$TESTS_RESULT" "All GPG verification tests should pass"
         env:
