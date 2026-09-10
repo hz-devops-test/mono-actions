@@ -31,6 +31,8 @@ jobs:
       - name: Run setup-maven
         id: setup-maven
         uses: $/setup-maven
+        with:
+          root: hazelcast
 
       - name: Test outputs
         run: |
