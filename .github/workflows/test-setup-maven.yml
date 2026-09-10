@@ -9,14 +9,13 @@ on:
         required: true
 env:
   CURL_ASSERT_SCRIPT: >-
-    $(curl
+    curl
     --silent
     --show-error
     --fail-with-body
     --retry 5
     --retry-all-errors
-    https://raw.githubusercontent.com/hazelcast/assert.sh/main/assert.sh)
-
+    https://raw.githubusercontent.com/hazelcast/assert.sh/main/assert.sh
 
 jobs:
   test:
@@ -36,7 +35,7 @@ jobs:
 
       - name: Test outputs
         run: |
-          source /dev/stdin <<< "${CURL_ASSERT_SCRIPT}"
+          source /dev/stdin <<< "$($CURL_ASSERT_SCRIPT)"
 
           TESTS_RESULT=0
 
@@ -61,7 +60,7 @@ jobs:
 
       - name: Verify GPG signing via Maven
         run: |
-          source /dev/stdin <<< "${CURL_ASSERT_SCRIPT}"
+          source /dev/stdin <<< "$($CURL_ASSERT_SCRIPT)"
           TESTS_RESULT=0
 
           mvn gpg:sign-and-deploy-file \
