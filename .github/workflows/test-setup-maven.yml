@@ -51,7 +51,7 @@ jobs:
           assert_non_empty "${{ steps.setup-maven.outputs.cache-key }}" "cache-key"
           assert_non_empty "${{ steps.setup-maven.outputs.cache-hit }}" "cache-hit"
 
-          assert_eq 0 "$TESTS_RESULT" "All tests should pass"
+          assert_eq 0 "${TESTS_RESULT}" "All tests should pass"
 
       - name: Test GPG signing
         run: |
@@ -60,13 +60,15 @@ jobs:
 
           mvn gpg:sign \
             -f hazelcast/pom.xml \
+            -DpomFile=pom.xml \
             -Dfile=pom.xml \
+            -Durl=file:\${project.basedir} \
             --batch-mode || true
 
           acs_path=$(find hazelcast -name "hazelcast-root-*.pom.asc" | head -n 1)
           assert_true "[ -f '${acs_path}' ]" "The sign pom.xml.asc should be generated" || TESTS_RESULT=$?
 
-          assert_eq 0 "$TESTS_RESULT" "All GPG verification tests should pass"
+          assert_eq 0 "${TESTS_RESULT}" "All tests should pass"
         env:
           GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
 
