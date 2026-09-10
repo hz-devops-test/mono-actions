@@ -57,6 +57,7 @@ jobs:
         uses: $/setup-maven
         with:
           gpg-private-key: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }}
+          root: hazelcast
 
       - name: Verify GPG signing via Maven
         run: |
