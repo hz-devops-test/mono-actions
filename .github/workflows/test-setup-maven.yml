@@ -32,7 +32,7 @@ jobs:
 
       - name: Test outputs
         run: |
-          source /dev/stdin <<< "$($CURL_ASSERT_SCRIPT)"
+          source /dev/stdin <<< "$(${CURL_ASSERT_SCRIPT})"
 
           TESTS_RESULT=0
 
@@ -52,7 +52,7 @@ jobs:
       - name: Test GPG signing
         run: |
           set +e
-          source /dev/stdin <<< "$($CURL_ASSERT_SCRIPT)"
+          source /dev/stdin <<< "$(${CURL_ASSERT_SCRIPT})"
           TESTS_RESULT=0
 
           (
@@ -60,7 +60,7 @@ jobs:
             ./mvnw gpg:sign-and-deploy-file \
               -DpomFile=pom.xml \
               -Dfile=pom.xml \
-              -Durl=file://${{ github.workspace }}/hazelcast 1> /dev/null
+              -Durl=file://${{ github.workspace }}/hazelcast
           ) || true
 
           [ -f "$(find hazelcast -name "hazelcast-root-*.pom.asc" | head -n 1)" ]; file_exists=$?
