@@ -58,11 +58,11 @@ jobs:
           source /dev/stdin <<< "$($CURL_ASSERT_SCRIPT)"
           TESTS_RESULT=0
 
-          mvn gpg:sign \
-            -f hazelcast/pom.xml \
-            -DpomFile=pom.xml \
-            -Dfile=pom.xml \
-            -Durl=file:\${project.basedir} \
+          hazelcast/mvnw gpg:sign-and-deploy-file \
+            -DpomFile=hazelcast/pom.xml \
+            -Dfile=hazelcast/pom.xml \
+            -Durl=file://${{ github.workspace }}/hazelcast \
+            -DrepositoryId=local-test-repo \
             --batch-mode || true
 
           acs_path=$(find hazelcast -name "hazelcast-root-*.pom.asc" | head -n 1)
@@ -71,4 +71,5 @@ jobs:
           assert_eq 0 "${TESTS_RESULT}" "All tests should pass"
         env:
           GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
+
 
