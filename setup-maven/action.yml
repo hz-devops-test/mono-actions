@@ -14,7 +14,6 @@ inputs:
       when calling `mvn deploy`. See https://github.com/actions/setup-java#gpg-signing
     required: false
 
-
 outputs:
   cache-hit:
     value: ${{ steps.maven-cache.outputs.cache-hit == 'true' && 'true' || 'false' }}
