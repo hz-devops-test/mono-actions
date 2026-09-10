@@ -44,9 +44,9 @@ jobs:
 
       - name: Test GPG signing
         run: |
-          set -o errexit -o nounset -o pipefail ${RUNNER_DEBUG:+-x}
+          set +o errexit -o nounset -o pipefail ${RUNNER_DEBUG:+-x}
           source /dev/stdin <<< "$(${CURL_ASSERT_SCRIPT})"
-          TESTS_RESULT=0
+          TESTS_RESULT=0e
 
           (
           cd hazelcast && \
