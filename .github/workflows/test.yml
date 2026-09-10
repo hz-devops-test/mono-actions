@@ -24,6 +24,7 @@ jobs:
   #   uses: ./.github/workflows/test-get-latest-released-version.yml
   #   secrets: inherit
 
+  
   test-setup-maven:
     uses: ./.github/workflows/test-setup-maven.yml
     secrets: inherit
