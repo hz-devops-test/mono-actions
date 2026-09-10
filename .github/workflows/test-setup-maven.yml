@@ -60,12 +60,12 @@ jobs:
               ${MAVEN_ARGS} \
               -DpomFile=pom.xml \
               -Dfile=pom.xml \
-              -Durl=file://${{ github.workspace }}/hazelcast
+              -Durl=file://${{ github.workspace }}/hazelcast > /dev/null
           ) || true
 
           # ./hazelcast/mvnw gpg:sign-and-deploy-file \
           #   ${MAVEN_ARGS} \
-          #   -DpomFile=hazelcast/pom.xml \
+          #   -DpomFile=hazelcast/pom.xml \e
           #   -Dfile=hazelcast/pom.xml \
           #   -Durl=file://${{ github.workspace }}/hazelcast || true
 
@@ -73,8 +73,6 @@ jobs:
 
           msg="The signed pom.asc should be generated"
           assert_eq 0 "${file_exists}" "$msg" && log_success "${msg}" || TESTS_RESULT=$?
-          
-          #assert_eq 0 "${file_exists}" "The signed pom.asc should be generated" || TESTS_RESULT=$?
 
           assert_eq 0 "${TESTS_RESULT}" "All tests should pass"
         env:
