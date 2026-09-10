@@ -58,12 +58,13 @@ jobs:
           source /dev/stdin <<< "$($CURL_ASSERT_SCRIPT)"
           TESTS_RESULT=0
 
-          hazelcast/mvnw gpg:sign-and-deploy-file \
-            -DpomFile=hazelcast/pom.xml \
-            -Dfile=hazelcast/pom.xml \
-            -Durl=file://${{ github.workspace }}/hazelcast \
-            -DrepositoryId=local-test-repo \
-            --batch-mode || true
+          (cd hazelcast && \
+            ./mvnw gpg:sign-and-deploy-file \
+              -DpomFile=pom.xml \
+              -Dfile=pom.xml \
+              -Durl=file://${{ github.workspace }}/hazelcast \
+              -DrepositoryId=local-test-repo \
+              --batch-mode) || true
             
           [ -f "$(find hazelcast -name "hazelcast-root-*.pom.asc" | head -n 1)" ]; file_exists=$?
           assert_eq 0 "${file_exists}" "The sign pom.xml.asc should be generated" || TESTS_RESULT=$?
