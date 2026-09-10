@@ -28,7 +28,7 @@ jobs:
         uses: $/setup-maven
         with:
           root: hazelcast
-          gpg-private-key: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }}
+          #gpg-private-key: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }}
 
       - name: Test outputs
         run: |
