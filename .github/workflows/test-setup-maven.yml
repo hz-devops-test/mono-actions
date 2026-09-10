@@ -2,11 +2,7 @@ name: Test setup-maven action
 
 on:
   workflow_call:
-    secrets:
-      MAVEN_GPG_PRIVATE_KEY:
-        required: true
-      MAVEN_GPG_PASSPHRASE:
-        required: true
+
 env:
   CURL_ASSERT_SCRIPT: >-
     curl
