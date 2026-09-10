@@ -63,8 +63,7 @@ jobs:
             ./mvnw gpg:sign-and-deploy-file \
               -DpomFile=pom.xml \
               -Dfile=pom.xml \
-              -Durl=file://${{ github.workspace }}/hazelcast \
-              -DrepositoryId=local-test-repo
+              -Durl=file://${{ github.workspace }}/hazelcast
           ) || true
             
           [ -f "$(find hazelcast -name "hazelcast-root-*.pom.asc" | head -n 1)" ]; file_exists=$?
