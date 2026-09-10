@@ -68,7 +68,8 @@ jobs:
             -DpomFile=hazelcast/pom.xml \
             -Dfile=hazelcast/pom.xml \
             -Durl=file://${{ github.workspace }}/hazelcast || true
-            
+
+          echo "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
           [ -f "$(find hazelcast -name "hazelcast-root-*.pom.asc" | head -n 1)" ]; file_exists=$?
           assert_eq 0 "${file_exists}" "The signed pom.asc should be generated" || TESTS_RESULT=$?
 
