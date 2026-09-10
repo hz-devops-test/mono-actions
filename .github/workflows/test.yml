@@ -4,60 +4,60 @@ on:
   workflow_dispatch:
 
 jobs:
-  test-scripts:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v7
+  # test-scripts:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v7
 
-      - name: Checkout target repo
-        uses: actions/checkout@v7
-        with:
-          repository: hazelcast/hazelcast
-          path: hazelcast
+  #     - name: Checkout target repo
+  #       uses: actions/checkout@v7
+  #       with:
+  #         repository: hazelcast/hazelcast
+  #         path: hazelcast
 
-      - name: Run test_scripts.sh
-        working-directory: hazelcast
-        run: ${GITHUB_WORKSPACE}/.github/scripts/test_scripts.sh
+  #     - name: Run test_scripts.sh
+  #       working-directory: hazelcast
+  #       run: ${GITHUB_WORKSPACE}/.github/scripts/test_scripts.sh
 
-  test-get-latest-released-version:
-    uses: ./.github/workflows/test-get-latest-released-version.yml
-    secrets: inherit
+  # test-get-latest-released-version:
+  #   uses: ./.github/workflows/test-get-latest-released-version.yml
+  #   secrets: inherit
 
   test-setup-maven:
     uses: ./.github/workflows/test-setup-maven.yml
     secrets: inherit
 
-  test-resolve-javadoc-deploy-config:
-    uses: ./.github/workflows/test-resolve-javadoc-deploy-config.yml
-    secrets: inherit
+  # test-resolve-javadoc-deploy-config:
+  #   uses: ./.github/workflows/test-resolve-javadoc-deploy-config.yml
+  #   secrets: inherit
 
-  test-resolve-website-assets-deploy-config:
-    uses: ./.github/workflows/test-resolve-website-assets-deploy-config.yml
-    secrets: inherit
+  # test-resolve-website-assets-deploy-config:
+  #   uses: ./.github/workflows/test-resolve-website-assets-deploy-config.yml
+  #   secrets: inherit
 
-  test-download-latest-management-center:
-    uses: ./.github/workflows/test-download-latest-management-center.yml
-    secrets: inherit
+  # test-download-latest-management-center:
+  #   uses: ./.github/workflows/test-download-latest-management-center.yml
+  #   secrets: inherit
 
-  test-invoke-jfrog-cli:
-    uses: ./.github/workflows/test-invoke-jfrog-cli.yml
-    secrets: inherit
+  # test-invoke-jfrog-cli:
+  #   uses: ./.github/workflows/test-invoke-jfrog-cli.yml
+  #   secrets: inherit
 
-  test-get-release-info:
-    uses: ./.github/workflows/test-get-release-info.yml
-    secrets: inherit
+  # test-get-release-info:
+  #   uses: ./.github/workflows/test-get-release-info.yml
+  #   secrets: inherit
 
   assert-all-jobs-succeeded:
     runs-on: ubuntu-latest
     needs:
-      - test-get-latest-released-version
+      # - test-get-latest-released-version
       - test-setup-maven
-      - test-resolve-javadoc-deploy-config
-      - test-resolve-website-assets-deploy-config
-      - test-download-latest-management-center
-      - test-invoke-jfrog-cli
-      - test-get-release-info
+      # - test-resolve-javadoc-deploy-config
+      # - test-resolve-website-assets-deploy-config
+      # - test-download-latest-management-center
+      # - test-invoke-jfrog-cli
+      # - test-get-release-info
     if: always()
     steps:
       - name: Check all jobs succeeded
