@@ -3,6 +3,16 @@ name: Test setup-maven action
 on:
   workflow_call:
 
+env:
+  CURL_ASSERT_SCRIPT: >-
+    $(curl
+    --silent
+    --show-error
+    --fail-with-body
+    --retry 5
+    --retry-all-errors
+    https://raw.githubusercontent.com/hazelcast/assert.sh/main/assert.sh)
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -16,12 +26,10 @@ jobs:
       - name: Run setup-maven
         id: setup-maven
         uses: $/setup-maven
-        with:
-          root: hazelcast
 
       - name: Test outputs
         run: |
-          source /dev/stdin <<< "$(curl --fail --retry 5 --retry-all-errors --show-error --silent https://raw.githubusercontent.com/hazelcast/assert.sh/main/assert.sh)"
+          source /dev/stdin <<< "${CURL_ASSERT_SCRIPT}"
 
           TESTS_RESULT=0
 
@@ -37,3 +45,26 @@ jobs:
           assert_non_empty "${{ steps.setup-maven.outputs.cache-hit }}" "cache-hit"
 
           assert_eq 0 "$TESTS_RESULT" "All tests should pass"
+
+      - name: Run setup-maven with GPG
+        id: setup-maven-gpg
+        uses: $/setup-maven
+        with:
+          gpg-private-key: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }}
+
+      - name: Verify GPG signing via Maven
+        run: |
+          source /dev/stdin <<< "${CURL_ASSERT_SCRIPT}"
+          TESTS_RESULT=0
+
+          mvn gpg:sign-and-deploy-file \
+            -f hazelcast/pom.xml \
+            -DpomFile=pom.xml \
+            -Durl=file:\${project.basedir} \
+            --batch-mode || true
+
+          assert_true "[ -f hazelcast/pom.xml.asc ]" "The project directory should contain the pom.xml.asc signature file" || TESTS_RESULT=$?
+
+          assert_eq 0 "$TESTS_RESULT" "All GPG verification tests should pass"
+        env:
+          GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
